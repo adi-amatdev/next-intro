@@ -20,7 +20,7 @@ export default function SignUp(){
             email
         },{});
         if(response.status == 200){
-            router.push('/landing')
+            router.push('/')
         }
     }
 

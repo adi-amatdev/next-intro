@@ -1,20 +1,31 @@
-import { NextRequest } from "next/server";
-import { PrismaClient } from "../../generated/prisma";
+import { NextRequest, NextResponse } from "next/server";
+// import { PrismaClient } from "@/app/generated/prisma";
+import { userDetails } from "@/app/page";
+import prisma from "@/db";
 
-const client = new PrismaClient();
+// const client = new PrismaClient();
 
-export function GET(request : NextRequest){
-    return Response.json({
-        name: "aaditya",
-        email:"aaditya@acharya.com"
-    })
+export async function GET(request : NextRequest){
+
+
+    const resp: userDetails[] = await prisma.user.findMany({
+        omit:{
+            password: true
+        }
+    });
+    return Response.json(resp);
 }
 
 export async function POST(request : NextRequest){
-
+    //body
     const body = await request.json();
+    //headers
+    // const headers = request.headers.get("authorization");
+    // query params
+    // const query = request.nextUrl.searchParams.get("name");
+    // const params = request.nextUrl.searchParams.get("params");
 
-    const resp: Object = await client.user.create({
+    const resp: Object = await prisma.user.create({
         data:{
             username: body.username,
             password: body.password,
@@ -22,7 +33,7 @@ export async function POST(request : NextRequest){
         }
     })
     console.log(body);
-    return Response.json({
+    return NextResponse.json({
         resp
     })
 }
