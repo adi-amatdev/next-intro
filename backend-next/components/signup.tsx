@@ -1,7 +1,8 @@
 "use client"
 import { useRouter } from "next/navigation";
-import axios from "axios";
+// import axios from "axios";
 import { useState } from "react";
+import {createUser} from "@/actions/user";
 
 export default function SignUp(){
     const [username, setUsername] = useState("");
@@ -14,11 +15,12 @@ export default function SignUp(){
         if(username === "" || password === "" || email === ""){
             return alert('inputs cannot be empty');
         }
-        const response = await axios.post('http://localhost:3000/api/user',{
-            username,
-            password,
-            email
-        },{});
+        // const response = await axios.post('http://localhost:3000/api/user',{
+        //     username,
+        //     password,
+        //     email
+        // },{});
+        const response = await createUser(username, password, email);
         if(response.status == 200){
             router.push('/')
         }

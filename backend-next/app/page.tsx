@@ -2,6 +2,7 @@ import axios from "axios";
 // import { PrismaClient } from "./generated/prisma";
 
 import prisma from "@/db";
+import { getUsers } from "@/actions/user";
 
 export type userDetails = {
   username: string,
@@ -40,7 +41,8 @@ export default async function Home() {
     be async for calling async functions. 
     only ssr components can be async
   */
-  const users:userDetails[] | undefined = await getPrismUserDetails(); // getUserDetails()
+  const result = await getUsers(); // getPrismUserDetails(); // getUserDetails()
+  const users: userDetails[] | undefined = result?.response; //server action
   
   if(!users){
     return (
